@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+
+import '@/assets/bootstrap/css/bootstrap.css'
+import '@/assets/bootstrap/js/bootstrap.js'
 // import 'bootstrap/js/bootstrap.js'
 // import 'bootstrap/css/bootstrap.min.css'
 
