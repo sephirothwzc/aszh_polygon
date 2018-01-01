@@ -19,6 +19,9 @@ const createLintingRule = () => ({
   }
 })
 
+// 加载webpack
+var webpack=require('webpack');
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -36,6 +39,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      jquery:'jquery' // 如果使用npm 加载jquery 则直接使用
     }
   },
   module: {
@@ -88,5 +92,12 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  }
+  },
+  plugins: [  
+    new webpack.ProvidePlugin({  
+      $:"jquery",  
+      jQuery:"jquery",  
+      "windows.jQuery":"jquery"  
+    })  
+  ]
 }
