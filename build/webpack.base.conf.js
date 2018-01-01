@@ -39,7 +39,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      jquery:'jquery' // 如果使用npm 加载jquery 则直接使用
+      jquery:'jquery' // 如果使用npm 加载jquery 则直接使用 否则则需要路径
     }
   },
   module: {
