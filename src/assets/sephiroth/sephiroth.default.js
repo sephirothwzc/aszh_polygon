@@ -41,6 +41,8 @@ var displayCross = true;
 var stage;
 
 // #region public function 
+
+// 画图结束 弹出选择属性的窗口
 function fieldshow() {
     $("#typelist").css("display", "block");
     //$("#typelist").removeClass("fadeOut");
@@ -362,7 +364,7 @@ var setvdata=()=> {
     //     $("#pdata" + i).text(eval("_pdata" + i))
     // }
 }
-// #endregion
+
 
 // 启动画线 暂时不用
 function init() {
@@ -619,6 +621,8 @@ var setdatas=(data)=> {
 
     }
 }
+
+// #endregion
 
 var sephiroth = {
   initialization: (config) => {
