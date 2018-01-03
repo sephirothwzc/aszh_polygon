@@ -9,6 +9,8 @@ e_canvastrim.init = function (c) {
    var par = c.parent();
    var tempsc_w = par.width() / c.width();
    var tempsc_h = par.height() / c.height();
+   var t_top = (par.height() - (img.height * tempsc_w)) / 2; 
+   if(t_top<0){t_top = 0}
    if (tempsc_w > tempsc_h) {
       c.css("width", img.width * tempsc_h + "px");
       c.css("left", (par.width() - (img.width * tempsc_h)) / 2 + "px");
@@ -18,10 +20,10 @@ e_canvastrim.init = function (c) {
    }
    else {
       c.css("width", par.width() + "px");
-      c.css("top", (par.height() - (img.height * tempsc_w)) / 2 + "px");
+      c.css("top",  t_top + "px");
       c.css("left", "0");
       e_canvastrim.left = "0";
-      e_canvastrim.top = (par.height() - (img.height * tempsc_w)) / 2 + "px";
+      e_canvastrim.top = t_top + "px";
    }
 }
 e_canvastrim.addel = function (selfun, leavefun, delfun, text) {

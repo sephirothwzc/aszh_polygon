@@ -16,6 +16,12 @@ export default new Router({
     name: 'polygon',
     component: resolve => require(['@/components/polygon'], resolve)
     // component: polygon
+  },
+  {
+    path: '/sephiroth',
+    name: 'sephiroth',
+    component: resolve => require(['@/components/sephiroth'], resolve)
+    // component: polygon
   }
   ]
 })

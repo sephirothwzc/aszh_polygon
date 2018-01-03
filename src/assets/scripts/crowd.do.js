@@ -1,5 +1,34 @@
 /* eslint-disable */
+
 (function () {
+	var  __markInfo = {
+		projectId: 6743,
+		assignId: 361699,
+		personId: 976916,
+		dataId: 76210592,
+		markedCount: 0,
+		dataResultId: 0,
+		projectTitle: '2016\u7b2c1062\u671f\u56fe\u7247\u6807\u6ce8\u4efb\u52a1',
+		dataTitle: '277',
+		assignPersonName: '\u5367\u9f99-\u5f20\u745c',
+		operationCase: 2,
+		qualityPackageId: 0,
+		isGatherSource: false,
+		projectIntro: '',
+		source_key: '3b618a4f-b754-4ca0-baa4-f165e2b8d64b',
+		loadSource: true,
+		disable: false,
+		TemplateId: 258,
+		status: 0,
+		checkstatus: 0,
+		dataResultGuid: '512a20fe-309a-4d6b-a5c4-ebe14d795649',
+		lastEditTime: '2017-02-22T09:54:46.333',
+		qualityTime: '0001-01-01T00:00:00',
+		checkTime: '0001-01-01T00:00:00',
+		Type: 1,
+		FileName: ''
+	  }
+	  
 	if (!window.crowd) {
 		window.crowd = {};
 	}

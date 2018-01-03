@@ -45,21 +45,11 @@
 
 <script>
 
-// import '@/assets/scripts/data.js'
-import '@/assets/scripts/crowd.do.js'
-// import '@/assets/scripts/e_polygon.js'
-import '@/assets/scripts/e_rectangle.js'
-import '@/assets/scripts/e_color_road_jx.js'
-// import '@/assets/scripts/e_canvastrim.js'
-// import '@/assets/scripts/e_enlarge.js'
-import '@/assets/scripts/default.js'
-import recent from '@/assets/scripts/crowd.mark.recent.js'
-import marktemplate from '@/assets/scripts/crowd.mark.template.js'
 import 'jquery.mousewheel'
+import {sephiroth, set as sephirothSet} from '@/assets/sephiroth/sephiroth.default'
 
 var __markInfo = ''
-var tp = marktemplate()
-var tr = recent()
+
 export default {
   name: 'picapp',
   data () {
@@ -96,9 +86,8 @@ export default {
       Type: 1,
       FileName: ''
     }
-
-    tr.bind('#recent-panel')
-    tp.initialization(__markInfo)
+    sephirothSet(this.disablebtns, this.ablebtns)
+    sephiroth.initialization(__markInfo)
   },
   methods: {
     ttload () {
@@ -112,6 +101,12 @@ export default {
     },
     click_sdelbtn () {
         // 删除按钮点击
+    },
+    disablebtns () {
+        // 所有按钮不可用
+    },
+    ablebtns () {
+        // 启用所有按钮
     }
   }
 }
