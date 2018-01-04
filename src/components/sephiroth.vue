@@ -73,7 +73,8 @@
 import 'jquery.mousewheel'
 import {
   sephiroth,
-  set as sephirothSet
+  set as sephirothSet,
+  getfunction as sephirothGet
 } from '@/assets/sephiroth/sephiroth.default'
 
 var __markInfo = ''
@@ -148,6 +149,8 @@ export default {
     },
     saveItem() {
       // 保存按钮点击
+      var ft = sephirothGet()
+      ft()
     },
     cancelItem() {
       // 取消保存按钮
