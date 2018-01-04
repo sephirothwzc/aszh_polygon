@@ -3,19 +3,20 @@ import $ from 'jquery'
 import { data1, data2 } from '@/assets/scripts/data.js'
 import e_canvastrim from '@/assets/sephiroth/sephiroth.e_canvastrim'
 import e_enlarge from '@/assets/sephiroth/sephiroth.e_enlarge'
-// import '@/assets/sephiroth/sephiroth.e_polygon'
-// import '@/assets/sephiroth/sephiroth.e_rectangle'
 import '@/assets/scripts/e_color_road_jx'
 
 var img = new Image()
 
 // 设置按钮不可用接口 相当于 interface 抽象
 var disablebtns,
-  ablebtns // 启用所有按钮 事件
+  ablebtns, // 启用所有按钮 事件
+  fieldshow
 
-function set (bd, ab) {
+// 传入设置的参数方法
+function set (bd, ab,fs) {
   disablebtns = bd
   ablebtns = ab
+  fieldshow = fs
 }
 
 // 当前是否处于编辑状态
@@ -43,16 +44,16 @@ var stage;
 // #region public function 
 
 // 画图结束 弹出选择属性的窗口
-function fieldshow() {
-    $("#typelist").css("display", "block");
-    //$("#typelist").removeClass("fadeOut");
-    //$("#typelist").addClass("fadeIn");
-    $("#typelist").show();
-    $("#typelist").removeAttr("disabled");
-    $(".dropdown-submenu.open").removeClass("open");
-    $("#typelist").css("top", (_epageY - $(".main-page").offset().top - 118) + "px");
-    $("#typelist").css("left", (_epageX - $(".main-page").offset().left + 247) + "px");
-}
+// function fieldshow() {
+//     $("#typelist").css("display", "block");
+//     //$("#typelist").removeClass("fadeOut");
+//     //$("#typelist").addClass("fadeIn");
+//     $("#typelist").show();
+//     $("#typelist").removeAttr("disabled");
+//     $(".dropdown-submenu.open").removeClass("open");
+//     $("#typelist").css("top", (_epageY - $(".main-page").offset().top - 118) + "px");
+//     $("#typelist").css("left", (_epageX - $(".main-page").offset().left + 247) + "px");
+// }
 
 // #endregion
 
@@ -882,7 +883,7 @@ export {
             stage.removeEventListener("mousedown", p_this.evt_stageclick);
             stage.removeEventListener("stagemousemove", p_this.evt_stagemove);
 
-            fieldshow();
+            fieldshow(stage);
             var _ttemptext;
             var rl_linsten = function () {
                 _isedit= false;
@@ -950,7 +951,7 @@ export {
             	stage_b.removeAllChildren();
             	stage_b.addChild(p_this.editcont);
 			         p_this.editcont.visible=true;
-			         fieldshow();
+			         fieldshow(stage);
 			         if(_editings==null){
 			         		fieldhide();
 			         	}
@@ -1071,7 +1072,7 @@ export {
             	stage_b.removeAllChildren();
             	stage_b.addChild(p_this.editcont);
 			         p_this.editcont.visible=true;
-			         fieldshow();
+			         fieldshow(stage);
 			         if(_editings==null){
 			         		fieldhide();
 			         	}
@@ -1284,7 +1285,7 @@ export {
           stage.removeEventListener("pressmove", p_this.evt_pressmove);
           stage.removeEventListener("pressup", p_this.evt_pressup);
  
-          fieldshow();
+          fieldshow(stage);
  
           var rl_linsten = function () {
                  _isedit= false;
@@ -1348,7 +1349,7 @@ export {
                  stage_b.removeAllChildren();
                  stage_b.addChild(p_this.editcont);
                       p_this.editcont.visible=true;
-                      fieldshow();
+                      fieldshow(stage);
                       if(_editings==null){
                               fieldhide();
                           }
@@ -1437,7 +1438,7 @@ export {
                  stage_b.removeAllChildren();
                  stage_b.addChild(p_this.editcont);
                       p_this.editcont.visible=true;
-                      fieldshow();
+                      fieldshow(stage);
                       if(_editings==null){
                               fieldhide();
                           }

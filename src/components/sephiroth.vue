@@ -1,12 +1,24 @@
 <template>
+<div>
   <div class="content">
       <!-- 操作区域 -->
       <div class="container" style="padding-top:10px;outline: 0;width:825px;">
           <div class="col-xs-7" style="padding:0 0 0;">
-              <button type="button" id="rectangle" class="btn btn-primary" title="Tooltip on left" style="border-radius: 6px;">矩形(R)</button>
-              <button type="button" id="polygon" class="btn btn-primary" style="border-radius: 6px;">多边形(D)</button>
+              <button type="button" id="rectangle" 
+              class="btn btn-primary" 
+              title="Tooltip on left" 
+              style="border-radius: 6px;"
+              v-bind:disabled="btnenable"
+              >矩形(R)</button>
+              <button type="button" id="polygon"
+               class="btn btn-primary" 
+               style="border-radius: 6px;"
+               v-bind:disabled="btnenable"
+               >多边形(D)</button>
           </div>
-          <a id="tmphide" class="btn btn-default" role="button">隐藏文字</a>
+          <a id="tmphide" class="btn btn-default" 
+          role="button"
+          >隐藏文字</a>
           <a id="tmpshow" class="btn btn-default" role="button" style="display:none">显示文字</a>
           <a id="allshow" class="btn btn-default" role="button">全部隐藏</a>
           <a id="tmpsave" class="btn btn-primary" role="button" style="border-radius: 6px;float: right;width: 100px;">保存</a>
@@ -41,23 +53,43 @@
           </div>
       </div>
   </div>
+  <!-- 选中属性区域 -->
+  <template v-if="this.proshow">
+    <div class="box-form-base" id="box-form" style="position: relative;float:right;margin-top:2px;box-shadow: rgb(191, 191, 191) 1px 0px 10px; z-index: 999; width: 300px; background-color: rgb(255, 255, 255);">
+        <div class="box-form-content">     
+        <h4>{{this.proshow}}</h4>     
+        <div class="box-form-footer">
+            <span id="box_save" v-on:click="saveItem" >保存</span>
+            <span id="box_cancel" v-on:click="cancelItem" >取消</span>
+            <div style="color:#f00;margin-top:10px">操作完成请记得点击“保存”</div>
+        </div>
+        </div>
+    </div>
+  </template>
+</div>
 </template>
 
 <script>
-
 import 'jquery.mousewheel'
-import {sephiroth, set as sephirothSet} from '@/assets/sephiroth/sephiroth.default'
+import {
+  sephiroth,
+  set as sephirothSet
+} from '@/assets/sephiroth/sephiroth.default'
 
 var __markInfo = ''
 
 export default {
   name: 'picapp',
-  data () {
+  data() {
     return {
-      msgdd: 'Welcome to Your Vue.js App'
+      btnenable: false, // 按钮是否启用
+      proshow: false,
+      juststage: {
+        // 当前绘制对象
+      }
     }
   },
-  mounted () {
+  mounted() {
     console.log('123')
     __markInfo = {
       projectId: 6743,
@@ -86,78 +118,90 @@ export default {
       Type: 1,
       FileName: ''
     }
-    sephirothSet(this.disablebtns, this.ablebtns)
+    sephirothSet(this.disablebtns, this.ablebtns, this.fieldshow)
     sephiroth.initialization(__markInfo)
   },
   methods: {
-    ttload () {
+    ttload() {
       console.log('123')
     },
-    click_rectangle () {
-        // 矩形按钮点击
+    click_rectangle() {
+      // 矩形按钮点击
     },
-    click_polygon () {
-        // 多边形点击
+    click_polygon() {
+      // 多边形点击
     },
-    click_sdelbtn () {
-        // 删除按钮点击
+    click_sdelbtn() {
+      // 删除按钮点击
     },
-    disablebtns () {
-        // 所有按钮不可用
+    disablebtns() {
+      // 所有按钮不可用
+      this.btnenable = true
     },
-    ablebtns () {
-        // 启用所有按钮
+    ablebtns() {
+      // 启用所有按钮
+      this.btnenable = false
+    },
+    fieldshow(stage) {
+      // 显属性窗口
+      this.proshow = true
+    },
+    saveItem() {
+      // 保存按钮点击
+    },
+    cancelItem() {
+      // 取消保存按钮
     }
   }
 }
 </script>
 
 <style scoped>
-        .main-page {
-            min-height: 500px;
-        }
-        
-        .w {
-            background-color: #eee;
-            padding: 10px;
-        }
-        
-        .recent .item {
-            display: block;
-            line-height: 25px;
-        }
-        
-        .recent {
-            background-color: #f5f5f5;
-            padding: 10px;
-        }
-        
-        .recent .tit {
-            margin-bottom: 5px;
-        }
-        
-        .quote {
-            position: absolute;
-            right: 0;
-            top: -15px;
-            border-radius: 50px;
-            height: 50px;
-            width: 50px;
-            text-align: center;
-            line-height: 50px;
-            z-index: 99999;
-            font-weight: lighter;
-            display: none;
-        }
-        
-        .hg {
-            background-color: #20BB51;
-            color: #FFFFFF;
-        }
-        
-        .bhg {
-            background-color: #FF0055;
-            color: #FFFFFF;
-        }
+.main-page {
+  min-height: 500px;
+}
+
+.w {
+  background-color: #eee;
+  padding: 10px;
+}
+
+.recent .item {
+  display: block;
+  line-height: 25px;
+}
+
+.recent {
+  background-color: #f5f5f5;
+  padding: 10px;
+}
+
+.recent .tit {
+  margin-bottom: 5px;
+}
+
+.quote {
+  position: absolute;
+  right: 0;
+  top: -15px;
+  border-radius: 50px;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 50px;
+  z-index: 99999;
+  font-weight: lighter;
+  display: none;
+}
+
+.hg {
+  background-color: #20bb51;
+  color: #ffffff;
+}
+
+.bhg {
+  background-color: #ff0055;
+  color: #ffffff;
+}
 </style>
 
