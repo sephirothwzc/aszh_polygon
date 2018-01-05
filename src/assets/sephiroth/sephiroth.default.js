@@ -33,6 +33,8 @@ var _editings = null
 // 绘制十字架
 var lastX, lastY, can, context, cw, ch
 var imgRate
+// 当前计数器
+var retnum = 1
 // 是否显示文本
 var _showtext = true
 
@@ -812,6 +814,7 @@ export { sephiroth, set, getfunction }
     })
     this.editcont.addChild(tempp)
   }
+  // 画标题文本
   p.drawshape = function(_ttemptext, trig) {
     this.removeChild(this.stagecontainer)
     this.addChild(this.e_shape)
@@ -984,35 +987,40 @@ export { sephiroth, set, getfunction }
         var _ttemptext
 
         // 完成事件 外部调用
-        var rl_linsten = function() {
+        // value 当前选中文本（一级） pro[pro0,pro1,pro2,pro3]所有属性项目
+        var rl_linsten = function(provalue,pro) {
+          var _ttemptext = provalue.jtype
           _isedit = false
           ablebtns()
-          p_this.e_data.type = this.value
-          this.checked = false
-          $("input[name='typeOpts']").unbind('change', rl_linsten)
-          fieldhide()
-          var child_id = this.parentNode.parentNode.childNodes[2].value
-          var child_id_z =
-            this.parentNode.parentNode.childNodes[2].value + '_' + retnum
-          if (child_id != '' && child_id != null && child_id != undefined) {
-            var _ttemptext =
-              child_id_z + ' ' + this.parentNode.childNodes[1].nodeValue
-          } else {
-            var _ttemptext =
-              retnum + ' ' + this.parentNode.childNodes[1].nodeValue
-          }
-          //var _ttemptext = retnum + this.parentNode.childNodes[1].nodeValue;
-          p_this.e_obj.arr = p_this.e_data
-          p_this.e_obj.e_type = p_this.e_type
-          p_this.e_obj.text = _ttemptext
+          p_this.e_data.type = provalue.id
+        //   this.checked = false // this 代表 input inradio
+        //   $("input[name='typeOpts']").unbind('change', rl_linsten)
+        //   fieldhide()// 隐藏属性窗体 可以忽略
+        // #region 拼凑显示文本
+        //   var child_id = this.parentNode.parentNode.childNodes[2].value
+        //   var child_id_z =
+        //     this.parentNode.parentNode.childNodes[2].value + '_' + retnum
+        //   if (child_id != '' && child_id != null && child_id != undefined) {
+        //     var _ttemptext =
+        //       child_id_z + ' ' + this.parentNode.childNodes[1].nodeValue
+        //   } else {
+        //     var _ttemptext =
+        //       retnum + ' ' + this.parentNode.childNodes[1].nodeValue
+        //   }
+          // var _ttemptext = retnum + this.parentNode.childNodes[1].nodeValue;
+          // #endregion
+          p_this.e_obj.arr = p_this.e_data// 获取属性点
+          p_this.e_obj.e_type = p_this.e_type // 框的类型 4 多边形
+          p_this.e_obj.text = provalue.id + ' ' + _ttemptext // 获取显示文本
           //新增id和parentId，用于导出数据。
           p_this.e_obj.id = retnum
-          if (child_id != '' && child_id != null && child_id != undefined) {
-            p_this.e_obj.parentId = child_id
-          } else {
-            p_this.e_obj.parentId = '-1'
-          }
-          p_this.e_obj.type = this.value
+        //   if (child_id != '' && child_id != null && child_id != undefined) {
+        //     p_this.e_obj.parentId = child_id
+        //   } else {
+        //     p_this.e_obj.parentId = '-1'
+        //   }
+          p_this.e_obj.parentId = '-1'
+          
           p_this.drawshape(_ttemptext)
 
           var csel = function() {
@@ -1100,7 +1108,7 @@ export { sephiroth, set, getfunction }
                 } else {
                   p_this.e_obj.parentId = '-1'
                 }
-                p_this.e_obj.type = this.value
+                p_this.e_obj.type = provalue
                 refreshDrag()
               })
             }

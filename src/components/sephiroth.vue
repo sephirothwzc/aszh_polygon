@@ -1,72 +1,168 @@
 <template>
-<div>
-  <div class="content">
+  <div>
+    <div class="content">
       <!-- 操作区域 -->
       <div class="container" style="padding-top:10px;outline: 0;width:825px;">
-          <div class="col-xs-7" style="padding:0 0 0;">
-              <button type="button" id="rectangle" 
-              class="btn btn-primary" 
-              title="Tooltip on left" 
-              style="border-radius: 6px;"
-              v-bind:disabled="btnenable"
-              >矩形(R)</button>
-              <button type="button" id="polygon"
-               class="btn btn-primary" 
-               style="border-radius: 6px;"
-               v-bind:disabled="btnenable"
-               >多边形(D)</button>
-          </div>
-          <a id="tmphide" class="btn btn-default" 
-          role="button"
-          >隐藏文字</a>
-          <a id="tmpshow" class="btn btn-default" role="button" style="display:none">显示文字</a>
-          <a id="allshow" class="btn btn-default" role="button">全部隐藏</a>
-          <a id="tmpsave" class="btn btn-primary" role="button" style="border-radius: 6px;float: right;width: 100px;">保存</a>
-          <div>
-              <button type="button" id="sdelbtn" class="btn btn-default" style="float: left; position: absolute; top: 100px; z-index: 102; width: 66px; left: -10px;display:none">删除</button>
-          </div>
+        <div class="col-xs-7" style="padding:0 0 0;">
+          <button type="button" id="rectangle" class="btn btn-primary" title="Tooltip on left" style="border-radius: 6px;" v-bind:disabled="btnenable">矩形(R)</button>
+          <button type="button" id="polygon" class="btn btn-primary" style="border-radius: 6px;" v-bind:disabled="btnenable">多边形(D)</button>
+        </div>
+        <a id="tmphide" class="btn btn-default" role="button">隐藏文字</a>
+        <a id="tmpshow" class="btn btn-default" role="button" style="display:none">显示文字</a>
+        <a id="allshow" class="btn btn-default" role="button">全部隐藏</a>
+        <a id="tmpsave" class="btn btn-primary" role="button" style="border-radius: 6px;float: right;width: 100px;">保存</a>
+        <div>
+          <button type="button" id="sdelbtn" class="btn btn-default" style="float: left; position: absolute; top: 100px; z-index: 102; width: 66px; left: -10px;display:none">删除</button>
+        </div>
       </div>
       <!-- 标柱区域 -->
-      <div class="container">
-          <div class="row">
-              <div class="col-md-9">
-                  <div class="main-page">
-                      <div id="work-space-loading" style="color: rgb(221, 221, 221); font-size: 50px; left: 0px; position: absolute; right: 0px; text-align: center; top: 100px; display: none;">加载中...</div>
-                      <div id="work-space">
-                          <h5 style="margin-bottom:10px;">277</h5>
-                          <!--标注内容区域-->
-                              <div class="container" style="padding-top:10px;outline: 0;width:825px;">
-                                  <div class="canvasframe">
-                                      <div id="zommDiv" style="position:absolute;left:10px;top:5px;background:#fffef9;width:90px;height:20px;z-index:9999">级别：25%</div>
-                                      <canvas id="myCanvas" tabindex="1" width="1936" height="608" class="canvascont" style="width: 489.6px; top: 102.08px; left: 76.52px;">您的浏览器版本过低</canvas>
-                                      <div class="canvasmask" id="test1" style="display: none;"></div>
-                                  </div>
-                              </div>
-                              <canvas id="tcanvas" tabindex="1" width="1024" height="768" style="display:none">您的浏览器版本过低</canvas>
-                          <div class="btn-group btn-group-justified">
-                              <!--修改-->
-                              <a id="btnModify" class="btn btn-freeze btn-success btn-lg">修改</a>
-                          </div>
-                      </div>
+      <div class="container" style="position: relative;">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="main-page">
+              <div id="work-space-loading" style="color: rgb(221, 221, 221); font-size: 50px; left: 0px; position: absolute; right: 0px; text-align: center; top: 100px; display: none;">加载中...</div>
+              <div id="work-space">
+                <h5 style="margin-bottom:10px;">277</h5>
+                <!--标注内容区域-->
+                <div class="container" style="padding-top:10px;outline: 0;width:825px;">
+                  <div class="canvasframe">
+                    <div id="zommDiv" style="position:absolute;left:10px;top:5px;background:#fffef9;width:90px;height:20px;z-index:9999">级别：25%</div>
+                    <canvas id="myCanvas" tabindex="1" width="1936" height="608" class="canvascont" style="width: 489.6px; top: 102.08px; left: 76.52px;">您的浏览器版本过低</canvas>
+                    <div class="canvasmask" id="test1" style="display: none;"></div>
                   </div>
+                </div>
+                <canvas id="tcanvas" tabindex="1" width="1024" height="768" style="display:none">您的浏览器版本过低</canvas>
+                <div class="btn-group btn-group-justified">
+                  <!--修改-->
+                  <a id="btnModify" class="btn btn-freeze btn-success btn-lg">修改</a>
+                </div>
               </div>
+            </div>
           </div>
+        </div>
+        <!-- 选中属性区域 -->
+        <template v-if="this.proshow">
+          <div class="box-form-base" id="box-form" style="position:absolute; top:0; right:0; margin-top:2px;box-shadow: rgb(191, 191, 191) 1px 0px 10px; z-index: 999; width: 300px; background-color: rgb(255, 255, 255);">
+            <div class="box-form-content">
+              <h4>{{this.prodata.title}}</h4>
+              <!-- 第一层级 -->
+              <div class="clearfix">
+                <!-- 循环输出控件 -->
+                <div v-for="(tp1item,index) in this.prodata.data" :key="index" class="fl">
+                  <template v-if="tp1item.rule == 1">
+                    <label class="btn btn-primary"  style="margin-right:10px;margin-bottom:5px;">
+                      <input type="radio" name="options"  autocomplete="off" 
+                      v-bind:checked="tp1item.isaction" 
+                      v-on:change="changeisaction(tp1item,prodata.data,'1')">{{tp1item.jtype}}
+                    </label>
+                  </template>
+                  <template v-if="tp1item.rule == 2">
+                    <img v-bind:src="tp1item.jtypeinfo" alt="..." class="img-rounded">
+                    <input type="radio" name="options"  autocomplete="off" 
+                    v-bind:checked="tp1item.isaction" 
+                    v-on:change="changeisaction(tp1item,prodata.data,'1')">{{tp1item.jtype}}
+                  </template>
+                  <template v-if="tp1item.rule == 3">
+                    {{tp1item.jtypeinfo}}
+                    <input type="text"  class="form-control" v-model="tp1item.jtype" 
+                    v-on:change="changeisaction(tp1item,prodata.data,'1')" />
+                  </template>
+                </div>
+              </div>
+              <template v-if="this.pro1 != null  &&this.pro1.plist!=undefined&& this.pro1.plist.length>0">
+               <hr v-bind:style="{display:this.pro1!=null &&this.pro1.plist!=undefined &&this.pro1.plist.length>0?'block':'none'}">
+              <!-- 第二层级 -->
+              <div class="clearfix">
+                <!-- 循环输出控件 -->
+                <div v-for="(tp2item,index) in this.pro1.plist" :key="index" class="fl">
+                  <template v-if="tp2item.rule == 1">
+                    <label class="btn btn-primary"  style="margin-right:10px;margin-bottom:5px;">
+                      <input type="radio" name="options1"  autocomplete="off" 
+                      v-bind:checked="tp2item.isaction" 
+                      v-on:change="changeisaction(tp2item,pro1.plist,'2')">{{tp2item.jtype}}
+                    </label>
+                  </template>
+                  <template v-if="tp2item.rule == 2">
+                    <img v-bind:src="tp2item.jtypeinfo" alt="..." class="img-rounded">
+                    <input type="radio" name="options1"  autocomplete="off" 
+                    v-bind:checked="tp1item.isaction" 
+                    v-on:change="changeisaction(tp2item,pro1.plist,'2')">{{tp2item.jtype}}
+                  </template>
+                  <template v-if="tp2item.rule == 3">
+                    {{tp2item.jtypeinfo}}
+                    <input type="text"  class="form-control" v-model="tp2item.jtype" 
+                    v-on:change="changeisaction(tp2item,pro1.plist,'2')" />
+                  </template>
+                </div>
+              </div>
+              </template>
+              <template v-if="this.pro2 != null  &&this.pro2.plist!=undefined&& this.pro2.plist.length>0">
+              <hr v-bind:style="{display:this.pro2!=null &&this.pro2.plist!=undefined &&this.pro2.plist.length>0?'block':'none'}">
+              <!-- 第三层级 -->
+              <div class="clearfix">
+                <!-- 循环输出控件 -->
+                <div v-for="(tp1item,index) in this.pro2.plist" :key="index" class="fl">
+                  <template v-if="tp1item.rule == 1">
+                    <label class="btn btn-primary"  style="margin-right:10px;margin-bottom:5px;">
+                      <input type="radio" name="options2"  autocomplete="off" 
+                      v-bind:checked="tp1item.isaction" 
+                      v-on:change="changeisaction(tp1item,pro2.plist,'3')">{{tp1item.jtype}}
+                    </label>
+                  </template>
+                  <template v-if="tp1item.rule == 2">
+                    <img v-bind:src="tp1item.jtypeinfo" alt="..." class="img-rounded">
+                    <input type="radio" name="options2"  autocomplete="off" 
+                    v-bind:checked="tp1item.isaction" 
+                    v-on:change="changeisaction(tp1item,pro2.plist,'3')">{{tp1item.jtype}}
+                  </template>
+                  <template v-if="tp1item.rule == 3">
+                    {{tp1item.jtypeinfo}}
+                    <input type="text"  class="form-control" v-model="tp1item.jtype" 
+                    v-on:change="changeisaction(tp1item,pro2.plist,'3')" />
+                  </template>
+                </div>
+              </div>
+              </template>
+              <template v-if="this.pro3 != null  &&this.pro3.plist!=undefined&& this.pro3.plist.length>0">
+              <hr v-bind:style="{display:this.pro3!=null &&this.pro3.plist!=undefined  &&this.pro3.plist.length>0?'block':'none'}">
+              <!-- 第四层级 -->
+              <div class="clearfix">
+                <!-- 循环输出控件 -->
+                <div v-for="(tp1item,index) in this.pro3.plist" :key="index" class="fl">
+                  <template v-if="tp1item.rule == 1">
+                    <label class="btn btn-primary"  style="margin-right:10px;margin-bottom:5px;">
+                      <input type="radio" name="options3"  autocomplete="off" 
+                      v-bind:checked="tp1item.isaction" 
+                      v-on:change="changeisaction(tp1item,pro3.plist,'4')">{{tp1item.jtype}}
+                    </label>
+                  </template>
+                  <template v-if="tp1item.rule == 2">
+                    <img v-bind:src="tp1item.jtypeinfo" alt="..." class="img-rounded">
+                    <input type="radio" name="options3"  autocomplete="off" 
+                    v-bind:checked="tp1item.isaction" 
+                    v-on:change="changeisaction(tp1item,pro3.plist,'4')">{{tp1item.jtype}}
+                  </template>
+                  <template v-if="tp1item.rule == 3">
+                    {{tp1item.jtypeinfo}}
+                    <input type="text"  class="form-control" v-model="tp1item.jtype" 
+                    v-on:change="changeisaction(tp1item,pro3.plist,'4')" />
+                  </template>
+                </div>
+              </div>
+              </template>
+              <div class="box-form-footer">
+                <span id="box_save" v-on:click="saveItem">保存</span>
+                <span id="box_cancel" v-on:click="cancelItem">取消</span>
+                <div style="color:#f00;margin-top:10px">操作完成请记得点击“保存”</div>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
-  </div>
-  <!-- 选中属性区域 -->
-  <template v-if="this.proshow">
-    <div class="box-form-base" id="box-form" style="position: relative;float:right;margin-top:2px;box-shadow: rgb(191, 191, 191) 1px 0px 10px; z-index: 999; width: 300px; background-color: rgb(255, 255, 255);">
-        <div class="box-form-content">     
-        <h4>{{this.proshow}}</h4>     
-        <div class="box-form-footer">
-            <span id="box_save" v-on:click="saveItem" >保存</span>
-            <span id="box_cancel" v-on:click="cancelItem" >取消</span>
-            <div style="color:#f00;margin-top:10px">操作完成请记得点击“保存”</div>
-        </div>
-        </div>
+
     </div>
-  </template>
-</div>
+
+  </div>
 </template>
 
 <script>
@@ -79,6 +175,71 @@ import {
 
 var __markInfo = ''
 
+// 属性数据
+var tprodata = {
+  title: '标题',
+  titleenglish: 'titleenglish',
+  minlimit: '50,50',
+  data: [
+    {
+      id: 0,
+      rule: 1,
+      jtype: '树木',
+      e_jtype: 'tree',
+      jtypeinfo: '树木',
+      e_jtypeinfo: 'tree',
+      Color: '',
+      isaction: false,
+      plist: [
+        {
+          id: 1,
+          rule: 1,
+          jtype: '大树木',
+          e_jtype: 'bigtree',
+          jtypeinfo: '大树木',
+          e_jtypeinfo: 'bigtree',
+          isaction: false,
+          Color: '',
+          plist: [
+            {
+              id: 2,
+              rule: 1,
+              jtype: '水杉',
+              e_jtype: 'Metasequoia',
+              jtypeinfo: '树木',
+              e_jtypeinfo: 'Metasequoia',
+              isaction: false,
+              Color: ''
+            }
+          ]
+        },
+        {
+          id: 3,
+          rule: 1,
+          jtype: '小树木',
+          e_jtype: 'smtree',
+          jtypeinfo: '小树木',
+          e_jtypeinfo: 'smtree',
+          isaction: false,
+          Color: '',
+          plist: [
+            {
+              id: 2,
+              rule: 1,
+              jtype: '冬青',
+              e_jtype: 'Ilex',
+              jtypeinfo: '冬青',
+              e_jtypeinfo: 'Ilex',
+              isaction: false,
+              Color: ''
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
 export default {
   name: 'picapp',
   data() {
@@ -87,7 +248,12 @@ export default {
       proshow: false,
       juststage: {
         // 当前绘制对象
-      }
+      },
+      prodata: tprodata, // 属性集合
+      pro1: null, // 选中一级
+      pro2: null, // 选中二级
+      pro3: null, // 选中三级
+      pro4: null // 选中四级
     }
   },
   mounted() {
@@ -150,10 +316,18 @@ export default {
     saveItem() {
       // 保存按钮点击
       var ft = sephirothGet()
-      ft()
+      ft(this.pro1, [this.prodata, this.pro1, this.pro2, this.pro3])
+      this.proshow = false
     },
     cancelItem() {
       // 取消保存按钮
+    },
+    changeisaction(item, list, level) {
+      // 属性切换
+      this['pro' + level] = item
+      list.forEach(element => {
+        element.isaction = element === item
+      })
     }
   }
 }
@@ -207,4 +381,3 @@ export default {
   color: #ffffff;
 }
 </style>
-
