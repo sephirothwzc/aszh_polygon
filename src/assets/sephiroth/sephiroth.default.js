@@ -1074,43 +1074,45 @@ export { sephiroth, set, getfunction }
               _editings.hidepoint()
               fieldhide()
             } else {
-              $("input[name='typeOpts']").bind('change', function() {
-                p_this.e_data.type = this.value
-                this.checked = false
-                $("input[name='typeOpts']").unbind('change')
-                fieldhide()
-                var child_id = this.parentNode.parentNode.childNodes[2].value
-                var child_id_z =
-                  this.parentNode.parentNode.childNodes[2].value + '_' + retnum
-                if (
-                  child_id != '' &&
-                  child_id != null &&
-                  child_id != undefined
-                ) {
-                  var _ttemptext =
-                    child_id_z + ' ' + this.parentNode.childNodes[1].nodeValue
-                } else {
-                  var _ttemptext =
-                    retnum + ' ' + this.parentNode.childNodes[1].nodeValue
-                }
-                //var _ttemptext = retnum + ' ' + this.parentNode.childNodes[1].nodeValue;
-                p_this.e_obj.arr = p_this.e_data
-                p_this.e_obj.e_type = p_this.e_type
-                p_this.e_obj.text = _ttemptext
-                //新增id和parentId，用于导出数据。
-                p_this.e_obj.id = retnum
-                if (
-                  child_id != '' &&
-                  child_id != null &&
-                  child_id != undefined
-                ) {
-                  p_this.e_obj.parentId = child_id
-                } else {
-                  p_this.e_obj.parentId = '-1'
-                }
-                p_this.e_obj.type = provalue
-                refreshDrag()
-              })
+            // #region  input 选中更改事件
+            //   $("input[name='typeOpts']").bind('change', function() {
+            //     p_this.e_data.type = this.value
+            //     this.checked = false
+            //     $("input[name='typeOpts']").unbind('change')
+            //     fieldhide()
+            //     var child_id = this.parentNode.parentNode.childNodes[2].value
+            //     var child_id_z =
+            //       this.parentNode.parentNode.childNodes[2].value + '_' + retnum
+            //     if (
+            //       child_id != '' &&
+            //       child_id != null &&
+            //       child_id != undefined
+            //     ) {
+            //       var _ttemptext =
+            //         child_id_z + ' ' + this.parentNode.childNodes[1].nodeValue
+            //     } else {
+            //       var _ttemptext =
+            //         retnum + ' ' + this.parentNode.childNodes[1].nodeValue
+            //     }
+            //     //var _ttemptext = retnum + ' ' + this.parentNode.childNodes[1].nodeValue;
+            //     p_this.e_obj.arr = p_this.e_data
+            //     p_this.e_obj.e_type = p_this.e_type
+            //     p_this.e_obj.text = _ttemptext
+            //     //新增id和parentId，用于导出数据。
+            //     p_this.e_obj.id = retnum
+            //     if (
+            //       child_id != '' &&
+            //       child_id != null &&
+            //       child_id != undefined
+            //     ) {
+            //       p_this.e_obj.parentId = child_id
+            //     } else {
+            //       p_this.e_obj.parentId = '-1'
+            //     }
+            //     p_this.e_obj.type = provalue
+            //     refreshDrag()
+            //   })
+            // #endregion
             }
             _editings = p_this
           })
