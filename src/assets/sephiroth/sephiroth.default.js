@@ -22,7 +22,10 @@ function set(bd, ab, fs) {
 var allrl_linsten
 
 function getfunction() {
-  return allrl_linsten
+  return {
+    allrl_linsten: allrl_linsten,// 保存回调
+    refreshDrag: refreshDrag// 刷新画布，清空临时数据
+  }
 }
 
 // 当前是否处于编辑状态
@@ -131,7 +134,7 @@ var initialize = (source, markInfo) => {
 
     $(document).bind('keydown', function(evt) {
       if (evt.keyCode == 46) {
-        deleteNone()
+        refreshDrag()// 删除重绘制
       }
     })
 
@@ -388,6 +391,18 @@ var refreshDrag = () => {
 // 删除按钮隐藏
 var sdelbtnhide = () => {
   $('#sdelbtn').hide()
+}
+
+var _epageX, _epageY;
+$(document).bind("mousemove", function(e) {
+    _epageX = e.pageX;
+    _epageY = e.pageY;
+})
+// 删除按钮显示 右键激活
+function sdelbtnshow() {
+  $("#sdelbtn").show();
+  $("#sdelbtn").css("top", (_epageY - $(".main-page").offset().top - 18) + "px");
+  $("#sdelbtn").css("left", (_epageX - $(".main-page").offset().left - 27) + "px");
 }
 
 var fieldhide = () => {
@@ -814,7 +829,7 @@ export { sephiroth, set, getfunction }
     })
     this.editcont.addChild(tempp)
   }
-  // 画标题文本
+  // 画多边形标题文本
   p.drawshape = function(_ttemptext, trig) {
     this.removeChild(this.stagecontainer)
     this.addChild(this.e_shape)
@@ -822,7 +837,7 @@ export { sephiroth, set, getfunction }
     var eg = this.e_shape.graphics
     var color = e_color.selcolor(this.e_obj.type)
     this.e_shape.alpha = e_color.ealpha
-    if (trig != true) {
+    if (trig == '0,0,0') {
       eg.beginStroke('rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')')
       eg.beginFill(
         'rgba(' +
@@ -837,7 +852,7 @@ export { sephiroth, set, getfunction }
       )
       //eg.beginFill("rgb(" + color[0] + "," + color[1] + "," + color[2] + ")");
     } else {
-      eg.beginFill('rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')')
+      eg.beginFill('rgb(' + trig + ')')
     }
     this.e_shape.alpha = e_color.ealpha
     if (this.e_data != null && this.e_data.length > 0) {
@@ -992,7 +1007,28 @@ export { sephiroth, set, getfunction }
           var _ttemptext = provalue.jtype
           _isedit = false
           ablebtns()
+          // 颜色 Color
+          var trig = '0,0,0'
           p_this.e_data.type = provalue.id
+          p_this.e_obj.prodata = pro[0]
+          if(pro[1]!=undefined) {
+            p_this.e_obj.val1 = pro[1].jtype
+            trig = pro[1].Color
+          }
+          if(pro[2]!=undefined) {
+            p_this.e_obj.val2 = pro[2].jtype
+            trig = pro[2].Color
+          }
+          if(pro[3]!=undefined) {
+            p_this.e_obj.val3 = pro[3].jtype
+            trig = pro[3].Color
+          }
+          p_this.e_obj.trig = trig
+          p_this.e_obj.frame_type = 1
+          p_this.e_obj.stat = 0 // 框的质检、验收状态（0：未检查，1：检查后
+          p_this.e_obj.quality_stat = 1 // 框的合格不合格，（1：合格，0不合格。默认为1；）
+          p_this.e_obj.reason = '' // 不合格原因（默认为空）
+          p_this.e_obj.is_modify = 1 // 修改状态（默认为0，标注修改框后改为1）新增默认为1
         //   this.checked = false // this 代表 input inradio
         //   $("input[name='typeOpts']").unbind('change', rl_linsten)
         //   fieldhide()// 隐藏属性窗体 可以忽略
@@ -1021,7 +1057,7 @@ export { sephiroth, set, getfunction }
         //   }
           p_this.e_obj.parentId = '-1'
           
-          p_this.drawshape(_ttemptext)
+          p_this.drawshape(_ttemptext,trig)
 
           var csel = function() {
             p_this.e_shape.alpha = 1
@@ -1118,6 +1154,7 @@ export { sephiroth, set, getfunction }
           })
           retnum++
           $('.id_input').val('')
+          return p_this
         }
 
         // 吴占超修改 接口公布用于点击调用
@@ -1161,7 +1198,7 @@ export { sephiroth, set, getfunction }
     p_this.e_obj = obj
     p_this.e_data = p_this.e_obj.arr
     var _ttemptext = p_this.e_obj.text
-    p_this.drawshape(_ttemptext)
+    p_this.drawshape(_ttemptext,p_this.e_obj.trig)
 
     var csel = function() {
       p_this.e_shape.alpha = 1
@@ -1170,14 +1207,14 @@ export { sephiroth, set, getfunction }
     var cdel = (p_this.cdel = function() {
       p_this.parent.removeChild(p_this)
       if (
-        returnobj != undefined &&
-        returnobj != null &&
-        returnobj.datalist != undefined &&
-        returnobj.datalist != null
+        data1 != undefined &&
+        data1 != null &&
+        data1.datalist != undefined &&
+        data1.datalist != null
       ) {
-        var ind = returnobj.datalist.indexOf(p_this.e_obj)
+        var ind = data1.datalist.indexOf(p_this.e_obj)
         if (ind != -1) {
-          returnobj.datalist.splice(ind, 1)
+          data1.datalist.splice(ind, 1)
         }
       }
       refreshDrag()
@@ -1485,7 +1522,7 @@ export { sephiroth, set, getfunction }
           p_this.e_obj.parentId = '-1'
         }
         p_this.e_obj.type = this.value
-        p_this.drawshape(_ttemptext)
+        p_this.drawshape(_ttemptext,p_this.e_obj.trig)
         var csel = function() {
           p_this.e_shape.alpha = 1
         }
@@ -1586,7 +1623,7 @@ export { sephiroth, set, getfunction }
     p_this.e_obj = obj
     p_this.e_data = p_this.e_obj.arr
     var _ttemptext = p_this.e_obj.text
-    p_this.drawshape(_ttemptext)
+    p_this.drawshape(_ttemptext,p_this.e_obj.trig)
     var csel = function() {
       p_this.e_shape.alpha = 1
     }

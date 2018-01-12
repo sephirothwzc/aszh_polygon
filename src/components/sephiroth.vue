@@ -4,8 +4,8 @@
       <!-- 操作区域 -->
       <div class="container" style="padding-top:10px;outline: 0;width:825px;">
         <div class="col-xs-7" style="padding:0 0 0;">
-          <button type="button" id="rectangle" class="btn btn-primary" title="Tooltip on left" style="border-radius: 6px;" v-bind:disabled="btnenable">矩形(R)</button>
-          <button type="button" id="polygon" class="btn btn-primary" style="border-radius: 6px;" v-bind:disabled="btnenable">多边形(D)</button>
+          <button type="button" id="rectangle" class="btn btn-primary" title="Tooltip on left" style="border-radius: 6px;" v-bind:disabled="btnenable" v-on:click="setframetype(0)">矩形(R)</button>
+          <button type="button" id="polygon" class="btn btn-primary" style="border-radius: 6px;" v-bind:disabled="btnenable" v-on:click="setframetype(1)">多边形(D)</button>
         </div>
         <a id="tmphide" class="btn btn-default" role="button">隐藏文字</a>
         <a id="tmpshow" class="btn btn-default" role="button" style="display:none">显示文字</a>
@@ -172,6 +172,7 @@ import {
   set as sephirothSet,
   getfunction as sephirothGet
 } from '@/assets/sephiroth/sephiroth.default'
+import { data1 } from '@/assets/scripts/data.js'
 
 var __markInfo = ''
 
@@ -188,7 +189,7 @@ var tprodata = {
       e_jtype: 'tree',
       jtypeinfo: '树木',
       e_jtypeinfo: 'tree',
-      Color: '',
+      Color: '255,255,0',
       isaction: false,
       plist: [
         {
@@ -199,7 +200,7 @@ var tprodata = {
           jtypeinfo: '大树木',
           e_jtypeinfo: 'bigtree',
           isaction: false,
-          Color: '',
+          Color: '0,255,255',
           plist: [
             {
               id: 2,
@@ -209,7 +210,7 @@ var tprodata = {
               jtypeinfo: '树木',
               e_jtypeinfo: 'Metasequoia',
               isaction: false,
-              Color: ''
+              Color: '250,235,215'
             }
           ]
         },
@@ -221,7 +222,7 @@ var tprodata = {
           jtypeinfo: '小树木',
           e_jtypeinfo: 'smtree',
           isaction: false,
-          Color: '',
+          Color: '128,128,125',
           plist: [
             {
               id: 2,
@@ -231,7 +232,7 @@ var tprodata = {
               jtypeinfo: '冬青',
               e_jtypeinfo: 'Ilex',
               isaction: false,
-              Color: ''
+              Color: '128,128,125'
             }
           ]
         }
@@ -247,13 +248,17 @@ export default {
       btnenable: false, // 按钮是否启用
       proshow: false,
       juststage: {
-        // 当前绘制对象
+        // 当前绘制对象 选中后暨更改此对象
       },
       prodata: tprodata, // 属性集合
       pro1: null, // 选中一级
       pro2: null, // 选中二级
       pro3: null, // 选中三级
-      pro4: null // 选中四级
+      pro4: null, // 选中四级
+      boxs: [], // 画框数据集合
+      boxssource: [], // 重绘用数据
+      frame_type: -1, // 1多边形 0矩形 -1 未选中 初始化
+      dt1: data1
     }
   },
   mounted() {
@@ -315,12 +320,35 @@ export default {
     },
     saveItem() {
       // 保存按钮点击
-      var ft = sephirothGet()
+      var ft = sephirothGet().allrl_linsten
       ft(this.pro1, [this.prodata, this.pro1, this.pro2, this.pro3])
       this.proshow = false
+      // #region 采用历史版本
+      // if (this.juststage.id === undefined) {
+      //   // 新增对象
+      //   this.boxssource.push(pthis)
+      //   var boxitem = {
+      //     frame_type: this.frame_type, // 类型
+      //     spot: pthis.e_obj.arr, // 坐标数据集合
+      //     val1: this.pro1.jtype, // 一级目录内容
+      //     val2: this.pro2.jtype, // 二级目录内容
+      //     val3: this.pro3.jtype, // 三级目录内容
+      //     stat: 0, // 框的质检、验收状态（0：未检查，1：检查后
+      //     quality_stat: 1, // 框的合格不合格，（1：合格，0不合格。默认为1；）
+      //     reason: '', // 不合格原因（默认为空）
+      //     is_modify: 1 // 修改状态（默认为0，标注修改框后改为1）新增默认为1
+      //   }
+      //   this.boxs.push(boxitem)
+      // } else {
+      //   // 修改当前对象
+      // }
+      // #endregion
     },
     cancelItem() {
       // 取消保存按钮
+      this.juststage = null
+      this.proshow = false
+      sephirothGet().refreshDrag()
     },
     changeisaction(item, list, level) {
       // 属性切换
@@ -328,6 +356,9 @@ export default {
       list.forEach(element => {
         element.isaction = element === item
       })
+    },
+    setframetype(boxtype) {
+      this.frame_type = boxtype
     }
   }
 }

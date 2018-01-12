@@ -44,7 +44,6 @@
 </template>
 
 <script>
-
 // import '@/assets/scripts/data.js'
 import '@/assets/scripts/crowd.do.js'
 // import '@/assets/scripts/e_polygon.js'
@@ -62,12 +61,12 @@ var tp = marktemplate()
 var tr = recent()
 export default {
   name: 'picapp',
-  data () {
+  data() {
     return {
       msgdd: 'Welcome to Your Vue.js App'
     }
   },
-  mounted () {
+  mounted() {
     console.log('123')
     __markInfo = {
       projectId: 6743,
@@ -101,68 +100,68 @@ export default {
     tp.initialization(__markInfo)
   },
   methods: {
-    ttload () {
+    ttload() {
       console.log('123')
     },
-    click_rectangle () {
-        // 矩形按钮点击
+    click_rectangle() {
+      // 矩形按钮点击
     },
-    click_polygon () {
-        // 多边形点击
+    click_polygon() {
+      // 多边形点击
     },
-    click_sdelbtn () {
-        // 删除按钮点击
+    click_sdelbtn() {
+      // 删除按钮点击
     }
   }
 }
 </script>
 
 <style scoped>
-        .main-page {
-            min-height: 500px;
-        }
-        
-        .w {
-            background-color: #eee;
-            padding: 10px;
-        }
-        
-        .recent .item {
-            display: block;
-            line-height: 25px;
-        }
-        
-        .recent {
-            background-color: #f5f5f5;
-            padding: 10px;
-        }
-        
-        .recent .tit {
-            margin-bottom: 5px;
-        }
-        
-        .quote {
-            position: absolute;
-            right: 0;
-            top: -15px;
-            border-radius: 50px;
-            height: 50px;
-            width: 50px;
-            text-align: center;
-            line-height: 50px;
-            z-index: 99999;
-            font-weight: lighter;
-            display: none;
-        }
-        
-        .hg {
-            background-color: #20BB51;
-            color: #FFFFFF;
-        }
-        
-        .bhg {
-            background-color: #FF0055;
-            color: #FFFFFF;
-        }
+.main-page {
+  min-height: 500px;
+}
+
+.w {
+  background-color: #eee;
+  padding: 10px;
+}
+
+.recent .item {
+  display: block;
+  line-height: 25px;
+}
+
+.recent {
+  background-color: #f5f5f5;
+  padding: 10px;
+}
+
+.recent .tit {
+  margin-bottom: 5px;
+}
+
+.quote {
+  position: absolute;
+  right: 0;
+  top: -15px;
+  border-radius: 50px;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 50px;
+  z-index: 99999;
+  font-weight: lighter;
+  display: none;
+}
+
+.hg {
+  background-color: #20bb51;
+  color: #ffffff;
+}
+
+.bhg {
+  background-color: #ff0055;
+  color: #ffffff;
+}
 </style>
 
